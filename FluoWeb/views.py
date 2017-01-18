@@ -1,9 +1,9 @@
 from flask import render_template, g, request, url_for, redirect, session
 from FluoWeb import app
-from wtforms import Form, BooleanField, StringField, PasswordField, validators, SelectField, FloatField, DecimalField
+from wtforms import Form, validators, SelectField, FloatField
 import glob
-import serial
 
+from .speccontrol import move_spec
 
 class Navigation:
     def __init__(self, **kwargs):
@@ -101,13 +101,5 @@ def index(page='status'):
 
 
 
-def move_spec(device, wl):
-    cmd = ("%f goto\r"%wl).encode('utf-8')
-    print('SPECTRO: %s'%cmd)
-    dev = serial.Serial(device, timeout=600)
-    dev.write(cmd)
-    resp = dev.readline()
-    print(resp.decode('utf-8'))
-    dev.close()
-    
+
     
