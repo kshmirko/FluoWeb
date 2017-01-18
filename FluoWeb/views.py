@@ -1,8 +1,8 @@
 from flask import render_template, g, request, url_for, redirect, session
 from FluoWeb import app
 from wtforms import Form, BooleanField, StringField, PasswordField, validators, SelectField, FloatField, DecimalField
-import pickle
 import glob
+import serial
 
 
 class Navigation:
@@ -102,7 +102,7 @@ def index(page='status'):
 
 
 def move_spec(device, wl):
-    cmd = ("%*.1f goto\r"%wl).encode('utf-8')
+    cmd = ("%5.1f goto\r"%wl).encode('utf-8')
     print('SPECTRO: %s'%cmd)
     dev = serial.Serial(device, timeout=600)
     dev.write(cmd)
