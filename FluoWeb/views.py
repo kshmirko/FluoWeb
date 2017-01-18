@@ -87,7 +87,7 @@ def index(page='status'):
         elif request.method=='POST' and form.validate():
             session['currentPosition'] = float(form.data['currentPosition'])
             if 'specDev' in session:
-                move_spec(session['fluoDev'], session['currentPosition'])
+                move_spec(session['specDev'], session['currentPosition'])
             
             return render_template('%s.html'%('status'), navigation=navigation, form=form, status=session)
     
