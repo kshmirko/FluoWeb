@@ -7,15 +7,21 @@
 			  <label class="control-label col-sm-4" for="Leds">Светодиоды:</label>
 			  <div class="btn-group">
 				  {% for led in leds %}
-				  	  <button type='submit' class='btn btn-primary'>LED = {{ led }}</button>
+				  	  <button type='submit' class='btn btn-primary' name='led' value={{led}}>{{led}}</button>
 				  {% endfor %}
 			  </div>
+			  <br/>
 			  <label class="control-label col-sm-4" for="Leds">Положение турели:</label>
 			  <div class="btn-group">
 				  {% for tur in turs %}
-				  	  <button type='submit' class='btn btn-primary'>TUR = {{ tur }}</button>
+				  	  <button type='submit' class='btn btn-primary' name='tur' value={{tur}}>{{tur}}</button>
 				  {% endfor %}
 			  </div>
+			  <br/>
+			  <div class="col-sm-8">
+				  <button type='submit' class='btn btn-primary' name='exit' value=1>Выход</button>
+			  </div>
+			  
 		  </div>
 	  </form>
 {% endblock %}

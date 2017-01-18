@@ -3,7 +3,13 @@ from FluoWeb import app
 from wtforms import Form, validators, SelectField, FloatField
 import glob
 
+
+
 from .speccontrol import move_spec
+from .fluocontrol import LED_KEYS, TUR_KEYS, LED_OFF, FluoDevice
+TMP_KEYS=list(range(8))
+
+fluorimeter = FluoDevice()
 
 class Navigation:
     def __init__(self, **kwargs):
@@ -70,7 +76,8 @@ def index(page='status'):
         if request.method=='POST' and form.validate():
             session['fluoDev'] = str(form.fluoDev.data)
             session['specDev'] = str(form.specDev.data)
-                    
+            fluorimeter.port = session['fluoDev'] 
+            fluorimeter.baudrate=9600
             return render_template('%s.html'%('status'), navigation=navigation, form=form, status=session)
             
     elif page=='reset':
@@ -92,7 +99,32 @@ def index(page='status'):
             return render_template('%s.html'%('status'), navigation=navigation, form=form, status=session)
     
     elif page=='start':
-        return render_template('%s.html'%page, navigation=navigation, form=form, status=session, leds=list(range(8)), turs=list(range(8)))
+        if request.method=='POST':
+            tmpform = request.form
+        
+            key = None
+            if 'led' in tmpform:
+                key = LED_KEYS[int(tmpform['led'])]
+                if not fluorimeter.isOpen():
+                    fluorimeter.open()
+                    fluorimeter.initialize()
+                print(fluorimeter.send_char_led(key))
+                
+            elif 'tur' in tmpform:
+                key = LED_KEYS[int(tmpform['tur'])]
+                if not fluorimeter.isOpen():
+                    fluorimeter.open()
+                    fluorimeter.initialize()
+                print(fluorimeter.send_char(key))
+            else:
+                if fluorimeter.isOpen():
+                    fluorimeter.leave_test()
+                    fluorimeter.close()
+                return redirect(url_for('index'))
+            
+            
+            
+        return render_template('%s.html'%page, navigation=navigation, form=form, status=session, leds=TMP_KEYS, turs=TMP_KEYS)
     
         
     
