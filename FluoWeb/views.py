@@ -111,7 +111,7 @@ def index(page='status'):
                 print(fluorimeter.send_char_led(key))
                 
             elif 'tur' in tmpform:
-                key = LED_KEYS[int(tmpform['tur'])]
+                key = TUR_KEYS[int(tmpform['tur'])]
                 if not fluorimeter.isOpen():
                     fluorimeter.open()
                     fluorimeter.initialize()
