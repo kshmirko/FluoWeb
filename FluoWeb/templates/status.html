@@ -1,0 +1,24 @@
+{% extends "template.html" %}
+{% block title %}СОСТОЯНИЕ{% endblock %}
+{% block content %}
+<div class="row">
+	<div class='col-sm-4'>Состояние флуориметра:</div>
+	<div class='col-sm-8'><p class='bg-info'>{{ status.fluoDev }}</p></div>
+</div>
+<div class="row">
+	<div class='col-sm-4'>Состояние спектрометра:</div>
+	<div class='col-sm-8'><p class='bg-info'>{{ status.specDev }}</p></div>
+</div>
+<div class="row">
+	<div class='col-sm-4'>Состояние АЦП LTR-11:</div>
+	<div class='col-sm-8'><p class='bg-info'>{{ status.ltr11 }}</p></div>
+</div>
+<div class="row">
+	<div class='col-sm-4'>Состояние АЦП LTR-210:</div>
+	<div class='col-sm-8'><p class='bg-info'>{{ status.ltr210 }}</p></div>
+</div>
+<div class="row">
+	<div class='col-sm-4'>Центральная длина волны (нм.):</div>
+	<div class='col-sm-8'><p class='bg-info'>{{ status.currentPosition }}</p></div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "template.html" %}
+{% block title %}НАСТРОЙКА УСТРОЙСТВА "СПЕКТРОМЕТР"{% endblock %}
+{% block content %}
+	  <form class="form-horizontal" method='post' name='form'>
+		  <div class="form-group">
+			  
+			  <label class="control-label col-sm-4" for="Spectrometer">{{ form.currentPosition.label }}</label>
+			  <div class="col-sm-8">
+				  {{ form.currentPosition(class="form-control")|safe }}
+			  </div>
+		  </div>
+		  
+		  <div class="form-group">
+			  <div class="col-sm-offset-4 col-sm-8">
+				  <button type="submit" class="btn btn-default">Применить</button>
+		      </div>
+		  </div>
+	  </form>
+{% endblock %}

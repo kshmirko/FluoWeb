@@ -1,0 +1,25 @@
+{% extends "template.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block title %}НАСТРОЙКА{% endblock %}
+{% block content %}
+	  <form class="form-horizontal" method='post' name='form'>
+		  <div class="form-group">
+			  
+			  <label class="control-label col-sm-4" for="FluoDevice">{{ form.fluoDev.label }}</label>
+			  <div class="col-sm-8">
+				  {{ form.fluoDev(class="form-control")|safe }}
+			  </div>
+		  </div>
+		  <div class="form-group">
+			  <label class="control-label col-sm-4" for="SpecDevice">{{ form.specDev.label }}</label>
+			  <div class="col-sm-8">
+				  {{ form.specDev(class="form-control")|safe }}
+			  </div>
+		  </div>
+		  <div class="form-group">
+			  <div class="col-sm-offset-4 col-sm-8">
+				  <button type="submit" class="btn btn-default">Применить</button>
+		      </div>
+		  </div>
+	  </form>
+{% endblock %}
