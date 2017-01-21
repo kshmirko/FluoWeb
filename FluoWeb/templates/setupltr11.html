@@ -1,6 +1,128 @@
 {% extends "template.html" %}
 {% block title %}НАСТРОЙКА LTR-11{% endblock %}
-	  <form class="form-horizontal" method='post' name='form'>
+{% block content %}
+<script type="text/javascript">
+	$( function() {
+		$("#alert").hide();
+		$("#closeDialog").click(function(){
+			
+			var chNum=parseInt($("#chNum").val());
+			var chMode=$("#chMode option:selected").val();
+			var chRange=$("#chRange option:checked").val();
+			
+			if (Number.isInteger(chNum)) {
+				var txt="CH["+chNum+"] = (mode = "+chMode+", range = "+chRange+")";
+				$('#channels').append("<option value="+chNum+">"+txt+"</option>");
+				$('#addChannel').modal('hide');
+			}
+		});
+		
+		$("#delChannel").click(function(){
+			
+			$('#channels option:selected').remove();
+		});
+		
+		$("#form").submit(function(event){	
+			var startADC = $("#startADCMode option:selected").val();
+			var inputADC = $("#inputADCMode option:selected").val();
+			var frequency= $("#frequency").val();
+			var meas_time = $("#meas_time").val();
+			var num_blocks= $("#num_blocks").val();
+			var channels="";
+			var chs = $('#channels option');
+			var num_channels = chs.length;
+			
+			
+			chs.each(function(){
+				channels=channels+$(this).text()+"\n";
+			});
+			var dict={"startADCMode": startADC, "inputADCMode": inputADC, "frequency":frequency,
+				"meas_time":meas_time, "num_blocks":num_blocks, "num_channels":num_channels,
+				"channels":channels};
+			$.post("/setupltr11ajax",dict, function(jsn) {
+				$("#alert").text();
+				$('#alert').append(jsn.config_file);
+				$("#alert").show(500).delay(2000).hide(500);
+			}, 'json');
+			
+			
+			event.preventDefault();
+		});
+		
+	});
+</script>
+	
+<!-- Modal -->
+<div class="modal fade" id="addChannel" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Настройка канала
+                </h4>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <form class="form-horizontal" role="form">
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label" for="channelNum">Номер канала</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="chNum"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-3 control-label"for="chMode" >Режим канала</label>
+                    <div class="col-sm-8">
+                        <select class="form-control", id="chMode">
+							<option value="0">Дифференциальный</option>
+							<option value="1">С общей землей</option>
+							<option value="2">Измерение нуля</option>
+						</select>
+                    </div>
+                  </div>
+				  
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label" for="chRange">Диапазон канала</label>
+                    <div class="col-sm-8">
+                        <select class="form-control", id="chRange">
+							<option value=0>10 В</option>
+							<option value=1>2.5 В</option>
+							<option value=2>0.624 В</option>
+							<option value=3>0.156 В</option>
+						</select>
+                    </div>
+                  </div>
+                </form>
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                            Close
+                </button>
+                <button type="button" class="btn btn-primary" id="closeDialog">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+	  <div class="alert alert-info" id="alert">
+		  
+	  </div>
+	  <form class="form-horizontal" method='post' name='form' id="form">
 		  <div class="form-group">
 			  <label class="control-label col-sm-4" for="startADCMode">{{ form.startADCMode.label }}</label>
 			  <div class="col-sm-8">
@@ -14,8 +136,61 @@
 			  </div>
 		  </div>
 		  <div class="form-group">
+			  <label class="control-label col-sm-4" for="frequency">{{ form.frequency.label }}</label>
+			  <div class="col-sm-8">
+				  {{ form.frequency(class="form-control")|safe }}
+			  </div>
+		  </div>
+		  <div class="form-group">
+			  <label class="control-label col-sm-4" for="meas_time">{{ form.meas_time.label }}</label>
+			  <div class="col-sm-8">
+				  {{ form.meas_time(class="form-control")|safe }}
+			  </div>
+		  </div>
+		  <div class="form-group">
+			  <label class="control-label col-sm-4" for="num_blocks">{{ form.num_blocks.label }}</label>
+			  <div class="col-sm-8">
+				  {{ form.num_blocks(class="form-control")|safe }}
+			  </div>
+		  </div>
+		  <div class="form-group">
+			  <label class="control-label col-sm-4" for="channels">{{ form.channels.label }}</label>
+			  <div class="col-sm-4">
+				  {{ form.channels(class="form-control", size=10)|safe }}
+			  </div>
+			  <div class="col-sm-2">
+				  <buton type='button' class="btn btn-success" data-toggle="modal" data-target="#addChannel">Добавить</button>
+			  </div>
+			  <div class="col-sm-2">
+				  <buton type='button' class="btn btn-success" id="delChannel">Удалить</button>
+			  </div>
+		  </div>
+		  <div class="form-group">
 			  <div class="col-sm-offset-4 col-sm-8">
 				  <button type="submit" class="btn btn-default">Применить</button>
 		      </div>
 		  </div>
+		  
 	  </form>
+<h4>Справка по настройке устройства LTR-11</h4>
+<p>Режимы работы каналов:</p>
+<ul>
+	<li>0 - Дифференциальный</li>
+	<li>1 - С общей землей</li>
+	<li>2 - Измерение нуля</li>	
+</ul>
+
+<p>Диапазон напряжений:</p>
+<ul>
+	<li>0 - 10 В</li>
+	<li>1 - 2.5 В</li>
+	<li>2 - 0.624 В</li>
+	<li>3 - 0.156 В</li>	
+</ul>
+
+<p> Строка настройки канала выглядит следующим образом: <mark>CH[%a] = (mode = %b, range = %c)</mark></p>
+<p>	%a - номер логического канала </p>
+<p>	%b - режим работы канала (0-2) </p>
+<p>	%c - диапазон напряжений (0-3) </p>
+{% endblock %}
+	  

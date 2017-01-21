@@ -1,2 +1,169 @@
 {% extends "template.html" %}
 {% block title %}НАСТРОЙКА LTR-210{% endblock %}
+{% block content %}
+<script type="text/javascript">
+	$(function(){
+		$("#alert").hide();
+		$("#alert_error").hide();
+		$("#ch1_div").hide();
+		$("#ch2_div").hide();
+		$("#ch1_en").bootstrapToggle();
+		$("#ch2_en").bootstrapToggle();
+		$("#ch1_en").change(function(){
+			if($(this).prop("checked")){
+				$("#ch1_div").show();
+			} else {
+				$("#ch1_div").hide();
+			}
+		});
+		$("#ch2_en").change(function(){
+			if($(this).prop("checked")){
+				$("#ch2_div").show();
+			} else {
+				$("#ch2_div").hide();
+			}
+		});
+		$("#form").submit(function(event){	
+			event.preventDefault();
+		});
+		$("#syncMode").change(function(){
+			
+			if($(this).val()=='7'){
+				$("#frameFreq").prop("disabled", false);
+			}else{
+				$("#frameFreq").prop("disabled", true);
+			}
+		});
+		$("#form").submit(function(event){
+			//валидация введенных данных
+			var syncMode = parseInt($("#syncMode option:selected").val());
+			var histTime = parseFloat($("#histTime").val());
+			var measTime = parseFloat($("#measTime").val());
+			var frequency = parseInt($("#frequency").val());
+			var numBlocks = parseInt($("#numBlocks").val());
+			var frameFreq = parseInt($("#frameFreq").val());
+			var measZero = $("#measZero").is(":checked");
+			var ch1_en = $("#ch1_en").is(":checked");
+			var ch1_range = parseInt($("#ch1_range option:selected").val());
+			var ch1_mode =  parseInt($("#ch1_mode option:selected").val());
+			var ch2_en = $("#ch2_en").is(":checked");
+			var ch2_range = parseInt($("#ch2_range option:selected").val());
+			var ch2_mode =  parseInt($("#ch2_mode option:selected").val());
+			var ok = !(Number.isNaN(syncMode)||Number.isNaN(histTime)||Number.isNaN(measTime)||
+						Number.isNaN(frequency)||Number.isNaN(numBlocks)||Number.isNaN(frameFreq)||
+						Number.isNaN(ch1_range)||Number.isNaN(ch1_mode)||
+						Number.isNaN(ch2_range)||Number.isNaN(ch2_mode));
+			if(ok){
+				dict = {"syncMode":syncMode, "histTime":histTime, "measTime":measTime,
+						"frequency":frequency, "numBlocks":numBlocks, "frameFreq":frameFreq,
+						"measZero":measZero, "ch1_en":ch1_en, "ch1_mode":ch1_mode,"ch1_range":ch1_range,
+						"ch2_en":ch2_en, "ch2_mode":ch2_mode, "ch2_range":ch2_range};
+				$.post('/setupltr210ajax', dict, function(jsn){
+					
+				}, 'json');
+			}else{
+				$("#alert_error").text("Error");
+				$("#alert_error").show().delay(3000).hide(500);
+			}
+			event.preventDefault();
+			
+		});
+	});
+</script>
+
+<div class="alert alert-info" id="alert">
+</div>
+<div class="alert alert-danger" id="alert_error">
+</div>
+
+<form class="form-horizontal" method='post' name='form' id="form">
+  <div class="form-group">
+	  <label class="control-label col-sm-4" for="syncMode">{{ form.syncMode.label }}</label>
+	  <div class="col-sm-8">
+		  {{ form.syncMode(class="form-control")|safe }}
+	  </div>
+  </div>
+  <div class="form-group">
+	  <label class="control-label col-sm-4" for="histTime">{{ form.histTime.label }}</label>
+	  <div class="col-sm-8">
+		  {{ form.histTime(class="form-control")|safe }}
+	  </div>
+  </div>
+  <div class="form-group">
+	  <label class="control-label col-sm-4" for="measTime">{{ form.measTime.label }}</label>
+	  <div class="col-sm-8">
+		  {{ form.measTime(class="form-control")|safe }}
+	  </div>
+  </div>
+  <div class="form-group">
+	  <label class="control-label col-sm-4" for="frequency">{{ form.frequency.label }}</label>
+	  <div class="col-sm-8">
+		  {{ form.frequency(class="form-control")|safe }}
+	  </div>
+  </div>
+  <div class="form-group">
+	  <label class="control-label col-sm-4" for="numBlocks">{{ form.numBlocks.label }}</label>
+	  <div class="col-sm-8">
+		  {{ form.numBlocks(class="form-control")|safe }}
+	  </div>
+  </div>
+  <div class="form-group">
+	  <label class="control-label col-sm-4" for="frameFreq">{{ form.frameFreq.label }}</label>
+	  <div class="col-sm-8">
+		  {{ form.frameFreq(class="form-control")|safe }}
+	  </div>
+  </div>
+  <div class="form-group">
+	  <label class="control-label col-sm-4" for="measZero">{{ form.measZero.label }}</label>
+	  <div class="col-sm-8">
+	      <input type="checkbox" data-toggle="toggle" name="{{ form.measZero.name }}" id="{{ form.measZero.id }}"/>
+	  </div>
+  </div>
+  <div class="form-group">
+	  <label class="control-label col-sm-4" for="ch1_en">{{ form.ch1_en.label }}</label>
+	  <div class="col-sm-8">
+	      <input type="checkbox" data-toggle="toggle" name="{{ form.ch1_en.name }}" id="{{ form.ch1_en.id }}"/>
+	  </div>
+  </div>
+  <div id="ch1_div">
+	  <div class="form-group">
+		  <label class="control-label col-sm-4" for="ch1_range">{{ form.ch1_range.label }}</label>
+		  <div class="col-sm-8">
+			  {{ form.ch1_range(class="form-control")|safe }}
+		  </div>
+	  </div>
+	  <div class="form-group">
+		  <label class="control-label col-sm-4" for="ch1_mode">{{ form.ch1_mode.label }}</label>
+		  <div class="col-sm-8">
+			  {{ form.ch1_mode(class="form-control")|safe }}
+		  </div>
+	  </div>
+  </div>
+  <div class="form-group">
+	  <label class="control-label col-sm-4" for="ch2_en">{{ form.ch2_en.label }}</label>
+	  <div class="col-sm-8">
+	      <input type="checkbox" data-toggle="toggle" name="{{ form.ch2_en.name }}" id="{{ form.ch2_en.id }}"/>
+	  </div>
+  </div>
+  <div id="ch2_div">
+	  <div class="form-group">
+		  <label class="control-label col-sm-4" for="ch2_range">{{ form.ch2_range.label }}</label>
+		  <div class="col-sm-8">
+			  {{ form.ch2_range(class="form-control")|safe }}
+		  </div>
+	  </div>
+	  <div class="form-group">
+		  <label class="control-label col-sm-4" for="ch2_mode">{{ form.ch2_mode.label }}</label>
+		  <div class="col-sm-8">
+			  {{ form.ch2_mode(class="form-control")|safe }}
+		  </div>
+	  </div>
+	  
+  </div>
+  <div class="form-group">
+	  <div class="col-sm-offset-4 col-sm-8">
+		  <button type="submit" class="btn btn-default">Применить</button>
+      </div>
+  </div>
+</form>
+{% endblock %}
