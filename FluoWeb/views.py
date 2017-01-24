@@ -90,12 +90,10 @@ def configspecajax():
         
         if cmd== 'wave':
             session['currentPosition'] = float(param)
-            time.sleep(5)
             move_spec(session['specDev'], session['currentPosition'])
             message = 'Wavelength successfully changed to {}'.format(session['currentPosition'])
         elif cmd=='grat':
             session['currentGrating'] = int(param)
-            time.sleep(20)
             move_grating(session['specDev'], session['currentGrating'])
             message = 'Grating successfully changed to {}'.format(session['currentGrating'])
         
