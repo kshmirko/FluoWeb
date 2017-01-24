@@ -3,7 +3,7 @@ from FluoWeb import app
 from functools import wraps
 import time
 
-from .speccontrol import move_spec
+from .speccontrol import move_spec, move_grating
 from .fluocontrol import LED_KEYS, TUR_KEYS, LED_OFF, FluoDevice
 from .webforms import DeviceAssocForm, ConfigSpecForm, ConfigLtr11, ConfigLtr210
 TMP_KEYS=list(range(8))
