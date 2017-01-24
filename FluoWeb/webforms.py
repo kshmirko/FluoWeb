@@ -18,7 +18,7 @@ class DeviceAssocForm(Form):
             
 class ConfigSpecForm(Form):
     currentPosition = FloatField(label='Центральная длина волны (нм.):', id='currentPosition')
-    currentGrating=SelectField(label="Решётка:", choices=[(1,'№1'), (1, '№2')], id='currentGrating')
+    currentGrating=SelectField(label="Решётка:", choices=[(1,'№1'), (2, '№2')], id='currentGrating')
     
 class ConfigLtr11(Form):
     startADCMode = SelectField(label='Режим запуска АЦП', choices=[(0,'INTERNAL'),(1, 'EXTERNAL RISE'),(2,'EXTERNAL FALL')], default=0, id="startADCMode")
