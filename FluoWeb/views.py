@@ -2,6 +2,7 @@ from flask import render_template, g, request, url_for, redirect, session, jsoni
 from FluoWeb import app
 from functools import wraps
 import time
+import subprocess
 
 from .speccontrol import move_spec, move_grating
 from .fluocontrol import LED_KEYS, TUR_KEYS, LED_OFF, FluoDevice
@@ -133,12 +134,14 @@ def startajax():
                 fluorimeter.initialize()
             print(fluorimeter.send_char_led(key))
             
-    elif pref == 'syn':
+    elif pref == 'syn' and fluorimeter.isOpen():
+        fluorimeter.send_char('w')
+    elif pref == 'l11' and fluorimeter.isOpen():
         time.sleep(4)
-    elif pref == 'l11':
-        time.sleep(4)
-    elif pref == '210':
-        time.sleep(4)
+    elif pref == '210' and fluorimeter.isOpen():
+        p=subprocess.Popen(['./ltr210-fluo','2'])
+        fluorimeter.send_char('w')
+        cmd = p.wait()
             
     return jsonify(res=cmd)
     
