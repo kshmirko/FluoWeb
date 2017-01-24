@@ -3,6 +3,9 @@
 {% block content %}
 <script type="text/javascript">
 	$(function(){
+		$("form-group form-control").each(function(element){
+			$(this).prop("disabled", true);
+		})
 		$("#alert").hide();
 		$("#alert_error").hide();
 		$("#ch1_div").hide();
@@ -59,7 +62,8 @@
 						"measZero":measZero, "ch1_en":ch1_en, "ch1_mode":ch1_mode,"ch1_range":ch1_range,
 						"ch2_en":ch2_en, "ch2_mode":ch2_mode, "ch2_range":ch2_range};
 				$.post('/setupltr210ajax', dict, function(jsn){
-					
+					$("#alert").text(jsn.config_file);
+					$("#alert").show(500).delay(2000).hide(500);
 				}, 'json');
 			}else{
 				$("#alert_error").text("Error");

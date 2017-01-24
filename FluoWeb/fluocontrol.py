@@ -7,6 +7,7 @@ TEST_HEADER_LEN=226
 LED_KEYS = ['a','s','d','f','g','h','j','k']
 TUR_KEYS = ['z','x','c','v','b','n','m','q']
 LED_OFF =  ['e']
+SYNC_KEY = ['w']
 
 class FluoDevice(serial.Serial):
 

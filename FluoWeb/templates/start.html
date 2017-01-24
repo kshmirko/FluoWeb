@@ -1,28 +1,97 @@
 {% extends "template.html" %}
 {% block title %}УПРАВЛЕНИЕ{% endblock %}
 {% block content %}
-<h4>После работы с флуориметром на этой странице обязательно нажмите кнопку <mark>Выход</mark></h4>
+<script type="text/javascript">
+	$(function(){
+		$("input").click(function(data){
+			var nameid=$(this).attr('id');
+			var cmd="";
+			if(nameid.includes('led')){
+				$("#out").text("LED");
+				
+			}else if(nameid.includes("tur")){
+				$("#out").text("TUR");
+			}
+			$.post("/startajax", {"key":nameid}, function(data, status){
+				$("#out").append(data.res);
+			});
+		});
+		$("#syncSignal").click(function(){
+			$("button").prop("disabled", true);
+			//$("#syncSignal").prop("disabled", true);
+			$.post("/startajax", {"key":"sync"}, function(data, status){
+				$("button").prop("disabled", false);
+			});
+		});
+		$("#startLtr11").click(function(){
+			$("button").prop("disabled", true);
+			//$("#syncSignal").prop("disabled", true);
+			$.post("/startajax", {"key":"l11"}, function(data, status){
+				$("button").prop("disabled", false);
+			});
+		});
+		$("#startLtr210").click(function(){
+			$("button").prop("disabled", true);
+			//$("#syncSignal").prop("disabled", true);
+			$.post("/startajax", {"key":"210"}, function(data, status){
+				$("button").prop("disabled", false);
+			});
+		});
+	});
+	
+</script>
+<h4>После работы с флуориметром на этой странице обязательно переведите селекторы турели и светодиодов в положение  <font color="red">off</font></h4>
+<div id="out">
+	
+</div>
 	  <form class="form-horizontal" method='post' name='form'>
 		  <div class="form-group">
 			  
 			  <label class="control-label col-sm-4" for="Leds">Светодиоды:</label>
 			  <div class="btn-group">
-				  {% for led in leds %}
-				  	  <button type='submit' class='btn btn-primary' name='led' value={{led}}>{{led}}</button>
-				  {% endfor %}
+				  <label class="control-label col-sm-1"><input type="radio" name="led" id="ledoff" checked/>off</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="led" id="led0"/>0</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="led" id="led1"/>1</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="led" id="led2"/>2</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="led" id="led3"/>3</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="led" id="led4"/>4</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="led" id="led5"/>5</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="led" id="led6"/>6</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="led" id="led7"/>7</label>
 			  </div>
 			  <br/>
 			  <label class="control-label col-sm-4" for="Leds">Положение турели:</label>
 			  <div class="btn-group">
-				  {% for tur in turs %}
-				  	  <button type='submit' class='btn btn-primary' name='tur' value={{tur}}>{{tur}}</button>
-				  {% endfor %}
+				  <label class="control-label col-sm-1"><input type="radio" name="tur" id="turoff" checked/>off</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="tur" id="tur0"/>0</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="tur" id="tur1"/>1</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="tur" id="tur2"/>2</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="tur" id="tur3"/>3</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="tur" id="tur4"/>4</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="tur" id="tur5"/>5</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="tur" id="tur6"/>6</label>
+				  <label class="control-label col-sm-1"><input type="radio" name="tur" id="tur7"/>7</label>
 			  </div>
-			  <br/>
-			  <div class="col-sm-8">
-				  <button type='submit' class='btn btn-primary' name='exit' value=1>Выход</button>
-			  </div>
+			  <hr/>
 			  
+			  <div class="form-group">
+				  <label class="control-label col-sm-4" for="syncSignal">Сигнал синхронизации:</label>
+				  <div class="col-sm-8">
+					  <button type='button' class='btn btn-primary' name='syncSignal' id="syncSignal">Старт</button>
+				  </div>
+			  </div>
+			  <div class="form-group">
+				  <label class="control-label col-sm-4" for="startLtr11">Запуск LTR-11:</label>
+				  <div class="col-sm-8">
+					  <button type='button' class='btn btn-primary' name='startLtr11' id="startLtr11">Старт</button>
+				  </div>
+			  </div>
+			  <div class="form-group">
+				  <label class="control-label col-sm-4" for="startLtr210">Запуск LTR-210:</label>
+				  <div class="col-sm-8">
+					  <button type='button' class='btn btn-primary' name='startLtr210' id="startLtr210">Старт</button>
+				  </div>
+			  </div>
 		  </div>
 	  </form>
 {% endblock %}

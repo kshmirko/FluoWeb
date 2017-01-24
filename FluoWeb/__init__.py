@@ -4,7 +4,7 @@ from flask import Flask
 #from gevent import wsgi
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '123123123'
+app.config['SECRET_KEY'] = 'komu-to-herovato'
 
 
 import FluoWeb.views
