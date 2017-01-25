@@ -137,7 +137,9 @@ def startajax():
     elif pref == 'syn' and fluorimeter.isOpen():
         fluorimeter.send_char('w')
     elif pref == 'l11' and fluorimeter.isOpen():
+        p=subprocess.Popen(['./ltr11-fluo', '3'])
         time.sleep(4)
+        cmd = p.wait();
     elif pref == '210' and fluorimeter.isOpen():
         p=subprocess.Popen(['./ltr210-fluo','2'])
         fluorimeter.send_char('w')
