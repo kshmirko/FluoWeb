@@ -26,14 +26,16 @@
 		$("#startLtr11").click(function(){
 			$("button").prop("disabled", true);
 			//$("#syncSignal").prop("disabled", true);
-			$.post("/startajax", {"key":"l11"}, function(data, status){
+			$.post("/startajax", {"key":"l111"}, function(data, status){
+				$("#out").text(data.res);
 				$("button").prop("disabled", false);
 			});
 		});
 		$("#startLtr210").click(function(){
 			$("button").prop("disabled", true);
 			//$("#syncSignal").prop("disabled", true);
-			$.post("/startajax", {"key":"210"}, function(data, status){
+			$.post("/startajax", {"key":"2101"}, function(data, status){
+				$("#out").text(data.res);
 				$("button").prop("disabled", false);
 			});
 		});

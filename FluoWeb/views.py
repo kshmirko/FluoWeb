@@ -111,8 +111,10 @@ def start():
 @app.route('/startajax', methods=['POST'])
 def startajax():
     data = request.form["key"]
+    print(data)
     pref=data[:3]
     cmd=data[3:]
+    res = None
     if pref == 'led':
         if cmd=='off' and fluorimeter.isOpen():
             fluorimeter.leave_test()
@@ -136,16 +138,22 @@ def startajax():
             
     elif pref == 'syn' and fluorimeter.isOpen():
         fluorimeter.send_char('w')
+        res = "Ok"
     elif pref == 'l11' and fluorimeter.isOpen():
+        print(pref)
         p=subprocess.Popen(['./ltr11-fluo', '3'])
-        time.sleep(4)
-        cmd = p.wait();
+        time.sleep(1)
+        luorimeter.send_char('w')
+        print(pref)
+        res = p.wait();
     elif pref == '210' and fluorimeter.isOpen():
+        print(pref)
         p=subprocess.Popen(['./ltr210-fluo','2'])
+        time.sleep(1)
         fluorimeter.send_char('w')
-        cmd = p.wait()
+        res = p.wait()
             
-    return jsonify(res=cmd)
+    return jsonify(res=res)
     
 @app.route('/setupltr11', methods=['GET'])
 def setupltr11():
