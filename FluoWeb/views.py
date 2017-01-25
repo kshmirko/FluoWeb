@@ -171,7 +171,7 @@ def setupltr210():
 def setupltr11ajax():
     # Save data to file
     print(request.form["startADCMode"])
-    fname='ltr11.config'
+    fname='config.ltr11'
     config = []
     config.append('START ADC MODE: %s\n'%request.form["startADCMode"])
     config.append('INPUT MODE: %s\n'%request.form["inputADCMode"])
@@ -190,7 +190,7 @@ def setupltr11ajax():
     
 @app.route('/setupltr210ajax', methods=['POST'])
 def setupltr210ajax():
-    fname='ltr210.config'
+    fname='config.ltr210'
     
     config = []
     config.append("SYNC MODE: %s\n"%(request.form["syncMode"]))
