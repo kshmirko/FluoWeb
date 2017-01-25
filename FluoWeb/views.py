@@ -143,7 +143,7 @@ def startajax():
         print(pref)
         p=subprocess.Popen(['./ltr11-fluo', '3'])
         time.sleep(1)
-        luorimeter.send_char('w')
+        fluorimeter.send_char('w')
         print(pref)
         res = p.wait();
     elif pref == '210' and fluorimeter.isOpen():
