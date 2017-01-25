@@ -1,8 +1,9 @@
-from flask import render_template, g, request, url_for, redirect, session, jsonify, Response
+from flask import render_template, g, request, url_for, redirect, session, jsonify, Response, make_response
 from FluoWeb import app
 from functools import wraps
 import time
 import subprocess
+import glob
 
 from .speccontrol import move_spec, move_grating
 from .fluocontrol import LED_KEYS, TUR_KEYS, LED_OFF, FluoDevice
@@ -141,14 +142,14 @@ def startajax():
         res = "Ok"
     elif pref == 'l11' and fluorimeter.isOpen():
         print(pref)
-        p=subprocess.Popen(['./ltr11-fluo', '3'])
+        p=subprocess.Popen(['./ltr11.sh'])
         time.sleep(1)
         fluorimeter.send_char('w')
         print(pref)
         res = p.wait();
     elif pref == '210' and fluorimeter.isOpen():
         print(pref)
-        p=subprocess.Popen(['./ltr210-fluo','2'])
+        p=subprocess.Popen(['./ltr210.sh'])
         time.sleep(1)
         fluorimeter.send_char('w')
         res = p.wait()
@@ -213,3 +214,23 @@ def setupltr210ajax():
     
     session['ltr210']=fname
     return jsonify(config_file=fname)
+
+@app.route('/dataltr11', methods=['GET'])
+def getdata():
+    data = None
+    with open('ltr11.zip', 'rb') as zip:
+        data = zip.read()
+    response = make_response(data)
+    response.headers["Content-Disposition"] = "attachment; filename=ltr11.zip"
+    return response
+    
+@app.route('/dataltr210', methods=['GET'])
+def getdata():
+    data = None
+    with open('ltr210.zip', 'rb') as zip:
+        data = zip.read()
+    response = make_response(data)
+    response.headers["Content-Disposition"] = "attachment; filename=ltr210.zip"
+    return response
+    
+    
