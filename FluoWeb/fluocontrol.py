@@ -44,8 +44,8 @@ class FluoDevice(serial.Serial):
         return v
         
     def send_char_led(self, ch):
-        self.leave_test() # Switch off LED
-        self.enter_test()
+        if not self.test_mode:
+            self.enter_test()
         
         n=self.write(ch.encode('ascii'))
         v=self.read(TEST_HEADER_LEN)
