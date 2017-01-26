@@ -216,7 +216,7 @@ def setupltr210ajax():
     return jsonify(config_file=fname)
 
 @app.route('/dataltr11', methods=['GET'])
-def getdata():
+def getdata11():
     data = None
     with open('ltr11.zip', 'rb') as zip:
         data = zip.read()
@@ -225,7 +225,7 @@ def getdata():
     return response
     
 @app.route('/dataltr210', methods=['GET'])
-def getdata():
+def getdata210():
     data = None
     with open('ltr210.zip', 'rb') as zip:
         data = zip.read()
