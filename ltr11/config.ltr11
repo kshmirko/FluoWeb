@@ -1,0 +1,35 @@
+START ADC MODE: 0
+INPUT MODE: 2
+ADC MODE: 0
+FREQUENCY: 400000 Hz
+LOGICAL CHANNELS COUNT: 1 
+CH[0] = (mode = 0, range = 0)
+MEASUREMENTS TIME (mks): 1000.0
+REQUIRED BLOCKS : 3
+*******************************************************************************
+Максимальное время сбора в - 2.6с или 2621440 мкс 
+Максимальное количество отсчетов получаемых за 1 раз = 1024*1024 = 1048576
+
+
+#define LTR11_CHRANGE_10000MV         (0)     /* +-10 В (10000 мВ) */
+#define LTR11_CHRANGE_2500MV          (1)     /* +-2.5 В (2500 мВ) */
+#define LTR11_CHRANGE_625MV           (2)     /* +-0.625 В (625 мВ) */
+#define LTR11_CHRANGE_156MV           (3)     /* +-0.156 В (156 мВ) */
+
+#define LTR11_CHMODE_DIFF            (0) /* диф. подкл., 16 каналов */
+#define LTR11_CHMODE_COMM            (1) /* общая земля, 32 каналов */
+#define LTR11_CHMODE_ZERO            (2) /* измерение нуля */
+
+#define LTR11_STARTADCMODE_INT       (0)     /* внутренний старт (по команде хоста) */
+#define LTR11_STARTADCMODE_EXTRISE   (1)     /* по фронту внешнего сигнала; */
+#define LTR11_STARTADCMODE_EXTFALL   (2)     /* по спаду внешнего сигнала. */
+
+#define LTR11_INPMODE_EXTRISE        (0)     /* запуск преобразования по фронту внешнего сигнала */
+#define LTR11_INPMODE_EXTFALL        (1)     /* запуск преобразования по спаду внешнего сигнала */
+#define LTR11_INPMODE_INT            (2)     /* внутренний запуск АЦП */
+
+#define LTR11_ADCMODE_ACQ               (0x00)  /* сбор данных */
+#define LTR11_ADCMODE_TEST_U1P          (0x04)  /* подача тестового напряжения +U1 */
+#define LTR11_ADCMODE_TEST_U1N          (0x05)  /* подача тестового напряжения -U1 */
+#define LTR11_ADCMODE_TEST_U2N          (0x06)  /* подача тестового напряжения -U2 */
+#define LTR11_ADCMODE_TEST_U2P          (0x07)  /* подача тестового напряжения +U2 */
